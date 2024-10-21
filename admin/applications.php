@@ -63,15 +63,17 @@ require_once("../db.php");
                   <h3 class="box-title">Welcome <b>Admin</b></h3>
                 </div>
                 <div class="box-body no-padding">
-                  <ul class="nav nav-pills nav-stacked">
-                    <li><a href="dashboard.php"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-                    <li><a href="active-jobs.php"><i class="fa fa-briefcase"></i> Active Drives</a></li>
-                    <li class="active"><a href="applications.php"><i class="fa fa-address-card-o"></i> Students Profile</a></li>
-                    <!-- <li><a href="companies.php"><i class="fa fa-building"></i> Drives</a></li> -->
-                    <li><a href="companies.php"><i class="fa fa-arrow-circle-o-right"></i> Co - Ordinators</a></li>
-                    <li><a href="../logout.php"><i class="fa fa-arrow-circle-o-right"></i> Logout</a></li>
-                  </ul>
-                </div>
+    <ul class="nav nav-pills nav-stacked">
+        <li class="active"><a href="dashboard.php"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="active-jobs.php"><i class="fa fa-briefcase"></i> Active Drives</a></li>
+        <li><a href="applications.php"><i class="fa fa-address-card-o"></i> Students Profile</a></li>
+        <li><a href="companies.php"><i class="fa fa-arrow-circle-o-right"></i> Co-Ordinators</a></li>
+        <li><a href="attendance.php"><i class="fa fa-calendar-check-o"></i> Attendance Monitoring</a></li>
+        <li><a href="training-companies.php"><i class="fa fa-building"></i> Training Companies Registered</a></li>
+        <li><a href="student-scores.php"><i class="fa fa-trophy"></i> Display Scores of Students</a></li>
+        <li><a href="../logout.php"><i class="fa fa-arrow-circle-o-right"></i> Logout</a></li>
+    </ul>
+</div>
               </div>
             </div>
             <div class="col-md-9 bg-white padding-2">

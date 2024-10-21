@@ -105,11 +105,13 @@ require_once("db.php");
     <!-- /.content-wrapper -->
 
     <footer class="main-footer" style="margin-left: 0px;">
-      <div class="text-center">
-        <strong>Copyright &copy; 2022 <a href="learningfromscratch.online">Placement Portal</a>.</strong> All rights
-        reserved.
-      </div>
-    </footer>
+    <div class="text-center">
+        <strong>&copy; 2024-2025 Developed by Anuja | MCA Batch, PCCOE</strong>
+        <br>
+        <small>All rights reserved. <a href="https://learningfromscratch.online">Placement Portal</a>.</small>
+    </div>
+</footer>
+
 
     <!-- /.control-sidebar -->
     <!-- Add the sidebar's background. This div must be placed

@@ -133,6 +133,7 @@ if (isset($_SESSION['id_user']) || isset($_SESSION['id_company'])) {
                 </div>
 
                 <div class="form-group">
+                  <label style="color: red;">Upload Resume</label>
                   <label style="color: red;">File Format PDF Only!</label>
                   <input type="file" name="resume" class="btn btn-flat btn-danger" required>
                 </div>

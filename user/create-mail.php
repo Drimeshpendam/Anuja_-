@@ -71,14 +71,17 @@ require_once("../db.php");
                   <h3 class="box-title">Welcome <b><?php echo $_SESSION['name']; ?></b></h3>
                 </div>
                 <div class="box-body no-padding">
-                  <ul class="nav nav-pills nav-stacked">
-                    <li><a href="edit-profile.php"><i class="fa fa-user"></i> Edit Profile</a></li>
-                    <li><a href="index.php"><i class="fa fa-address-card-o"></i> My Applications</a></li>
-                    <li class="active"><a href="mailbox.php"><i class="fa fa-envelope"></i> Mailbox</a></li>
-                    <li><a href="settings.php"><i class="fa fa-gear"></i> Settings</a></li>
-                    <li><a href="../logout.php"><i class="fa fa-arrow-circle-o-right"></i> Logout</a></li>
-                  </ul>
-                </div>
+                                    <ul class="nav nav-pills nav-stacked">
+                                        <li><a href="edit-profile.php"><i class="fa fa-user"></i> Edit Profile</a></li>
+                                        <li><a href="index.php"><i class="fa fa-address-card-o"></i> My Applications</a></li>
+                                        <li><a href="mailbox.php"><i class="fa fa-envelope"></i> Mailbox</a></li>
+                                        <li><a href="settings.php"><i class="fa fa-gear"></i> Settings</a></li>
+                                        <li><a href="take-test.php"><i class="fa fa-pencil"></i> Take Test</a></li>
+                                        <li><a href="view-scores.php"><i class="fa fa-bar-chart"></i> View Scores</a></li>
+                                        <li class="active"><a href="view-attendance.php"><i class="fa fa-calendar-check-o"></i> View Attendance</a></li>
+                                        <li><a href="../logout.php"><i class="fa fa-arrow-circle-o-right"></i> Logout</a></li>
+                                    </ul>
+                                </div>
               </div>
             </div>
             <div class="col-md-9 bg-white padding-2">

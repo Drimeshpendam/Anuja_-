@@ -15,7 +15,7 @@
 
                          <li><a href="admin/index.php">Admin Login</a></li>
                          <li><a href="login-candidates.php">Student Login</a></li>
-                         <li><a href="login-company.php">Placement Cell</a></li>
+                         <li><a href="login-company.php">Training Institute Login</a></li>
 
 
                      </ul>
@@ -25,7 +25,7 @@
 
                          <!-- <li><a href="admin/index.php">Admin</a></li> -->
                          <li><a href="register-candidates.php">Students</a></li>
-                         <li><a href="register-company.php">Placement Cell</a></li>
+                         <li><a href="register-company.php">Training Institue</a></li>
 
 
                      </ul>
