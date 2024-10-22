@@ -1,11 +1,5 @@
 <?php
 session_start();
-
-if (isset($_SESSION['id_user']) || isset($_SESSION['id_company'])) {
-  header("Location: index.php");
-  exit();
-}
-
 ?>
 <!DOCTYPE html>
 <html>

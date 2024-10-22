@@ -1,116 +1,123 @@
 <?php
 
-//To Handle Session Variables on This Page
+// To Handle Session Variables on This Page
 session_start();
 
-//Including Database Connection From db.php file to avoid rewriting in all files
+// Including Database Connection From db.php file to avoid rewriting in all files
 require_once("db.php");
 
-//If user clicked register button
-if(isset($_POST)) {
+// If user clicked register button
+if (isset($_POST)) {
 
-	//Escape Special Characters In String First
-	$companyname = mysqli_real_escape_string($conn, $_POST['companyname']);
-	$contactno = mysqli_real_escape_string($conn, $_POST['contactno']);
-	$website = mysqli_real_escape_string($conn, $_POST['website']);
-	$email = mysqli_real_escape_string($conn, $_POST['email']);
-	$password = mysqli_real_escape_string($conn, $_POST['password']);
+    // Escape Special Characters In String First
+    $companyname = mysqli_real_escape_string($conn, $_POST['company_name']);
+    $contactno = mysqli_real_escape_string($conn, $_POST['contactno']);
+    $website = mysqli_real_escape_string($conn, $_POST['website']);
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $password = mysqli_real_escape_string($conn, $_POST['password']);
+    
+    $country = mysqli_real_escape_string($conn, $_POST['country']);
+    $state = mysqli_real_escape_string($conn, $_POST['state']);
+    $city = mysqli_real_escape_string($conn, $_POST['city']);
+    
+    $aboutme = mysqli_real_escape_string($conn, $_POST['aboutme']);
+    $name = mysqli_real_escape_string($conn, $_POST['name']);
+    $course_offered = mysqli_real_escape_string($conn, $_POST['course_offered']);
+    $budget = mysqli_real_escape_string($conn, $_POST['budget']);
 
-	$country = mysqli_real_escape_string($conn, $_POST['country']);
-	$state = mysqli_real_escape_string($conn, $_POST['state']);
-	$city = mysqli_real_escape_string($conn, $_POST['city']);
+    // Encrypt Password
+    $password = base64_encode(strrev(md5($password)));
 
-	$aboutme = mysqli_real_escape_string($conn, $_POST['aboutme']);
-	$name = mysqli_real_escape_string($conn, $_POST['name']);
+    // SQL query to check if email already exists
+    $sql = "SELECT email FROM company WHERE email='$email'";
+    $result = $conn->query($sql);
 
-	//Encrypt Password
-	$password = base64_encode(strrev(md5($password)));
+    // If email not found, insert new data
+    if ($result->num_rows == 0) {
 
-	//sql query to check if email already exists or not
-	$sql = "SELECT email FROM company WHERE email='$email'";
-	$result = $conn->query($sql);
+        // Variable to catch upload errors
+        $uploadOk = true;
 
-	//if email not found then we can insert new data
-	if($result->num_rows == 0) {
+        // Folder where you want to save your image and brochure
+        $folder_dir = "uploads/logo/";
+        $brochure_dir = "uploads/brochures/";
 
-			//This variable is used to catch errors doing upload process. False means there is some error and we need to notify that user.
-		$uploadOk = true;
+        // Handle image upload
+        $base = basename($_FILES['image']['name']);
+        $imageFileType = pathinfo($base, PATHINFO_EXTENSION);
+        $imageFile = uniqid() . "." . $imageFileType;
+        $filename = $folder_dir . $imageFile;
 
-		//Folder where you want to save your image. THIS FOLDER MUST BE CREATED BEFORE TRYING
-		$folder_dir = "uploads/logo/";
+        if (file_exists($_FILES['image']['tmp_name'])) {
+            if ($imageFileType == "jpg" || $imageFileType == "png") {
+                if ($_FILES['image']['size'] < 500000) { // 5MB limit
+                    move_uploaded_file($_FILES["image"]["tmp_name"], $filename);
+                } else {
+                    $_SESSION['uploadError'] = "Wrong Size. Max Size Allowed: 5MB";
+                    $uploadOk = false;
+                }
+            } else {
+                $_SESSION['uploadError'] = "Wrong Format. Only jpg & png Allowed";
+                $uploadOk = false;
+            }
+        } else {
+            $_SESSION['uploadError'] = "Something Went Wrong. File Not Uploaded. Try Again.";
+            $uploadOk = false;
+        }
 
-		//Getting Basename of file. So if your file location is Documents/New Folder/myResume.pdf then base name will return myResume.pdf
-		$base = basename($_FILES['image']['name']); 
+        // Handle brochure upload
+        $brochureFile = basename($_FILES['brochure']['name']);
+        $brochureFileType = pathinfo($brochureFile, PATHINFO_EXTENSION);
+        $brochureFileName = uniqid() . "." . $brochureFileType;
+        $brochureFilename = $brochure_dir . $brochureFileName;
 
-		//This will get us extension of your file. So myimage.pdf will return pdf. If it was image.doc then this will return doc.
-		$imageFileType = pathinfo($base, PATHINFO_EXTENSION); 
+        if (file_exists($_FILES['brochure']['tmp_name'])) {
+            if ($brochureFileType == "pdf" || $brochureFileType == "doc" || $brochureFileType == "docx") {
+                if ($_FILES['brochure']['size'] < 5000000) { // 5MB limit
+                    move_uploaded_file($_FILES["brochure"]["tmp_name"], $brochureFilename);
+                } else {
+                    $_SESSION['uploadError'] = "Brochure Too Large. Max Size Allowed: 5MB";
+                    $uploadOk = false;
+                }
+            } else {
+                $_SESSION['uploadError'] = "Wrong Format. Only pdf, doc, and docx Allowed";
+                $uploadOk = false;
+            }
+        } else {
+            $_SESSION['uploadError'] = "Something Went Wrong. Brochure Not Uploaded. Try Again.";
+            $uploadOk = false;
+        }
 
-		//Setting a random non repeatable file name. Uniqid will create a unique name based on current timestamp. We are using this because no two files can be of same name as it will overwrite.
-		$file = uniqid() . "." . $imageFileType; 
-	  
-		//This is where your files will be saved so in this case it will be uploads/image/newfilename
-		$filename = $folder_dir .$file;  
+        // If there is any error then redirect back
+        if ($uploadOk == false) {
+            header("Location: register-company.php");
+            exit();
+        }
 
-		//We check if file is saved to our temp location or not.
-		if(file_exists($_FILES['image']['tmp_name'])) { 
+        // SQL new registration insert query
+        $sql = "INSERT INTO company (name, companyname, country, state, city, contactno, website, email, password, aboutme, logo, course_offered, budget, brochure) 
+                VALUES ('$name', '$companyname', '$country', '$state', '$city', '$contactno', '$website', '$email', '$password', '$aboutme', '$imageFile', '$course_offered', '$budget', '$brochureFileName')";
 
-			//Next we need to check if file type is of our allowed extention or not. I have only allowed pdf. You can allow doc, jpg etc. 
-			if($imageFileType == "jpg" || $imageFileType == "png")  {
+        if ($conn->query($sql) === TRUE) {
+            // If data inserted successfully then set session variables and redirect
+            $_SESSION['registerCompleted'] = true;
+            header("Location: login-company.php");
+            exit();
+        } else {
+            // If data failed to insert, show error
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
+    } else {
+        // If email found in database, show error
+        $_SESSION['registerError'] = true;
+        header("Location: register-company.php");
+        exit();
+    }
 
-				//Next we need to check file size with our limit size. I have set the limit size to 5MB. Note if you set higher than 2MB then you must change your php.ini configuration and change upload_max_filesize and restart your server
-				if($_FILES['image']['size'] < 500000) { // File size is less than 5MB
-
-					//If all above condition are met then copy file from server temp location to uploads folder.
-					move_uploaded_file($_FILES["image"]["tmp_name"], $filename);
-
-				} else {
-					//Size Error
-					$_SESSION['uploadError'] = "Wrong Size. Max Size Allowed : 5MB";
-					$uploadOk = false;
-				}
-			} else {
-				//Format Error
-				$_SESSION['uploadError'] = "Wrong Format. Only jpg & png Allowed";
-				$uploadOk = false;
-			}
-		} else {
-				//File not copied to temp location error.
-				$_SESSION['uploadError'] = "Something Went Wrong. File Not Uploaded. Try Again.";
-				$uploadOk = false;
-			}
-
-		//If there is any error then redirect back.
-		if($uploadOk == false) {
-			header("Location: register-company.php");
-			exit();
-		}
-
-		//sql new registration insert query
-		$sql = "INSERT INTO company(name, companyname, country, state, city, contactno, website, email, password, aboutme, logo) VALUES ('$name', '$companyname', '$country', '$state', '$city', '$contactno', '$website', '$email', '$password', '$aboutme', '$file')";
-
-		if($conn->query($sql)===TRUE) {
-
-			//If data inserted successfully then Set some session variables for easy reference and redirect to company login
-			$_SESSION['registerCompleted'] = true;
-			header("Location: login-company.php");
-			exit();
-
-		} else {
-			//If data failed to insert then show that error. Note: This condition should not come unless we as a developer make mistake or someone tries to hack their way in and mess up :D
-			echo "Error " . $sql . "<br>" . $conn->error;
-		}
-	} else {
-		//if email found in database then show email already exists error.
-		$_SESSION['registerError'] = true;
-		header("Location: register-company.php");
-		exit();
-	}
-
-	//Close database connection. Not compulsory but good practice.
-	$conn->close();
-
+    // Close database connection
+    $conn->close();
 } else {
-	//redirect them back to register page if they didn't click register button
-	header("Location: register-company.php");
-	exit();
+    // Redirect them back to register page if they didn't click register button
+    header("Location: register-company.php");
+    exit();
 }

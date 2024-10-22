@@ -68,15 +68,16 @@ require_once("../db.php");
                 </div>
                 <div class="box-body no-padding">
                   <ul class="nav nav-pills nav-stacked">
-                    <li><a href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-                    <li><a href="edit-company.php"><i class="fa fa-tv"></i> Update Profile</a></li>
-                    <li><a href="create-job-post.php"><i class="fa fa-file-o"></i> Post Drive</a></li>
-                    <li class="active"><a href="my-job-post.php"><i class="fa fa-file-o"></i> Current Drives</a></li>
-                    <li><a href="job-applications.php"><i class="fa fa-file-o"></i> Drive Applications</a></li>
-                    <li><a href="mailbox.php"><i class="fa fa-envelope"></i> Mailbox</a></li>
-                    <li><a href="settings.php"><i class="fa fa-gear"></i> Settings</a></li>
-                    <li><a href="resume-database.php"><i class="fa fa-user"></i> Resume Database</a></li>
+                  <ul class="nav nav-pills nav-stacked">
+                    <li class="active"><a href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+                    <li><a href="pre-test.php"><i class="fa fa-pencil"></i> Pre Test</a></li>
+                    <li><a href="post-test.php"><i class="fa fa-pencil"></i> Post Test</a></li>
+                    <li><a href="conduct-attendance.php"><i class="fa fa-calendar-check-o"></i> Conduct Attendance</a></li>
+                    <li><a href="upload-timetable-syllabus.php"><i class="fa fa-upload"></i> Upload Time Table & Syllabus</a></li>
+                    <li><a href="edit-company.php"><i class="fa fa-tv"></i> Update Profile</a></li>                    
                     <li><a href="../logout.php"><i class="fa fa-arrow-circle-o-right"></i> Logout</a></li>
+                    <li class="header">Conduct Test</li>                    
+                  </ul>
                   </ul>
                 </div>
               </div>

@@ -2,7 +2,7 @@
 
 session_start();
 
-if (empty($_SESSION['id_company'])) {
+if (!isset($_SESSION['id_company'])) {
     header("Location: ../index.php");
     exit();
 }
@@ -11,7 +11,6 @@ require_once("../db.php");
 ?>
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">

@@ -1,13 +1,19 @@
 <?php
 session_start();
 
-if (empty($_SESSION['id_admin'])) {
-    header("Location: index.php");
+// Check if the user is not logged in
+if (!isset($_SESSION['id_user']) && !isset($_SESSION['id_company'])) {
+    // Redirect to login-company.php if not logged in
+    header("Location: login-company.php");
     exit();
 }
 
-require_once("../db.php");
+// Include the database connection
+require_once("db.php");
+
+// Your page content goes here
 ?>
+
 <!DOCTYPE html>
 <html>
 
@@ -43,9 +49,7 @@ require_once("../db.php");
                             <div class="box-body no-padding">
                                 <ul class="nav nav-pills nav-stacked">
                                     <li><a href="dashboard.php"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-                                    
                                     <li><a href="applications.php"><i class="fa fa-address-card-o"></i> Students Profile</a></li>
-                                    
                                     <li><a href="attendance.php"><i class="fa fa-calendar-check-o"></i> Attendance Monitoring</a></li>
                                     <li><a href="training-companies.php"><i class="fa fa-building"></i> Training Companies Registered</a></li>
                                     <li><a href="student-scores.php"><i class="fa fa-trophy"></i> Display Scores of Students</a></li>
@@ -76,28 +80,34 @@ require_once("../db.php");
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <?php
-                                                // Fetch registered training companies from the database
-                                                $companies_sql = "SELECT company_name, course_offered, budget, email, phone, brochure_link FROM training_companies";
-                                                $companies_result = $conn->query($companies_sql);
-                                                while ($company = $companies_result->fetch_assoc()) {
-                                                    echo "<tr>
-                                                            <td>{$company['company_name']}</td>
-                                                            <td>{$company['course_offered']}</td>
-                                                            <td>{$company['budget']}</td>
-                                                            <td>{$company['email']}</td>
-                                                            <td>{$company['phone']}</td>
-                                                            <td><a href='{$company['brochure_link']}' target='_blank'>View Brochure</a></td>
-                                                            <td>
-                                                                <form method='POST' action='approve_reject_company.php' style='display:inline;'>
-                                                                    <input type='hidden' name='company_name' value='{$company['company_name']}'>
-                                                                    <button type='submit' name='action' value='approve' class='btn btn-success btn-sm'>Approve</button>
-                                                                    <button type='submit' name='action' value='reject' class='btn btn-danger btn-sm'>Reject</button>
-                                                                </form>
-                                                            </td>
-                                                        </tr>";
-                                                }
-                                                ?>
+                                            <?php
+// Fetch registered training companies from the database
+$companies_sql = "SELECT `companyname`, `contactno`, `email`, `course_offered`, `budget`, `brochure` FROM company;";
+$companies_result = $conn->query($companies_sql);
+
+if ($companies_result->num_rows > 0) {
+    while ($company = $companies_result->fetch_assoc()) {
+        echo "<tr>
+                <td>{$company['companyname']}</td>
+                <td>{$company['course_offered']}</td>
+                <td>{$company['budget']}</td>
+                <td>{$company['email']}</td>
+                <td>{$company['contactno']}</td>
+                <td><a href='{$company['brochure']}' target='_blank'>View Brochure</a></td>
+                <td>
+                    <form method='POST' action='approve_reject_company.php' style='display:inline;'>
+                        <input type='hidden' name='company_name' value='{$company['companyname']}'>
+                        <button type='submit' name='action' value='approve' class='btn btn-success btn-sm'>Approve</button>
+                        <button type='submit' name='action' value='reject' class='btn btn-danger btn-sm'>Reject</button>
+                    </form>
+                </td>
+              </tr>";
+    }
+} else {
+    echo "<tr><td colspan='7'>No records found</td></tr>";
+}
+?>
+
                                             </tbody>
                                         </table>
                                     </div>
